@@ -1,15 +1,25 @@
 // src/components/MenuBar.tsx
 import React from 'react'
+import DataManager from './DataManager'
 
 interface MenuBarProps {
   className?: string
+  dataManager: DataManager
+  files: File[]
 }
 
-const MenuBar: React.FC<MenuBarProps> = ({ className }) => {
+const MenuBar: React.FC<MenuBarProps> = ({ className, dataManager, files }) => {
   const handleOpen = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault()
-    console.log('Open file')
-    // Add your file open logic here
+    files.forEach(file => {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const csvString = e.target?.result as string
+        dataManager.parseCsvString(file, csvString)
+      }
+      reader.readAsText(file)
+    })
+    console.log('Files processed')
   }
 
   const handleSave = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

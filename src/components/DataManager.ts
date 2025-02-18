@@ -40,4 +40,4 @@ class DataManager{
   }
 }
 
-export default CsvParser;
+export default DataManager;

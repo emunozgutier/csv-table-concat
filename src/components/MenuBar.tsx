@@ -1,14 +1,14 @@
-// src/components/MenuBar.tsx
 import React from 'react'
 import DataManager from './DataManager'
 
 interface MenuBarProps {
   className?: string
   dataManager: DataManager
+  setDataManager: React.Dispatch<React.SetStateAction<DataManager>>
   files: File[]
 }
 
-const MenuBar: React.FC<MenuBarProps> = ({ className, dataManager, files }) => {
+const MenuBar: React.FC<MenuBarProps> = ({ className, dataManager, setDataManager, files }) => {
   const handleOpen = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault()
     files.forEach(file => {

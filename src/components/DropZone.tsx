@@ -1,19 +1,30 @@
-// src/components/DropZone.tsx
 import React, { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
+import DataManager from './DataManager'
 
 interface DropZoneProps {
   files: File[]
   setFiles: React.Dispatch<React.SetStateAction<File[]>>
+  dataManager: DataManager
+  setDataManager: React.Dispatch<React.SetStateAction<DataManager>>
 }
 
-const DropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
+const DropZone: React.FC<DropZoneProps> = ({ files, setFiles, dataManager, setDataManager }) => {
   const [isDragging, setIsDragging] = useState(false)
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles(acceptedFiles)
     setIsDragging(false)
-  }, [setFiles])
+
+    acceptedFiles.forEach(file => {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const csvString = e.target?.result as string
+        dataManager.parseCsvString(file, csvString)
+      }
+      reader.readAsText(file)
+    })
+  }, [setFiles, dataManager])
 
   const onDragEnter = useCallback(() => {
     setIsDragging(true)

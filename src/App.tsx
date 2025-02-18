@@ -1,34 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [files, setFiles] = useState<File[]>([])
+  const [isDragging, setIsDragging] = useState(false)
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setFiles(acceptedFiles)
+    setIsDragging(false)
+  }, [])
+
+  const onDragEnter = useCallback(() => {
+    setIsDragging(true)
+  }, [])
+
+  const onDragLeave = useCallback(() => {
+    setIsDragging(false)
+  }, [])
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    onDragEnter,
+    onDragLeave,
+    noClick: true,
+  })
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div {...getRootProps({ className: 'dropzone' })}>
+      <input {...getInputProps()} />
+      {isDragging && <div className="drop-icon">Drop files here</div>}
+      <div className="files-list">
+        <h2>Files</h2>
+        <ul>
+          {files.map((file) => (
+            <li key={file.name}>{file.name}</li>
+          ))}
+        </ul>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 

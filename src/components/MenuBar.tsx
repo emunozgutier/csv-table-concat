@@ -24,8 +24,12 @@ const MenuBar: React.FC<MenuBarProps> = ({ className, dataManager, setDataManage
 
   const handleSave = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault()
-    console.log('Save file')
-    // Add your file save logic here
+    const fileName = prompt('Enter the filename to save:', 'data.csv')
+    if (fileName) {
+      const filePath = `${fileName}`
+      dataManager.saveToCsv(filePath)
+      console.log(`File saved as ${filePath}`)
+    }
   }
 
   return (

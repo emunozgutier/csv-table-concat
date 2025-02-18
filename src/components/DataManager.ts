@@ -38,6 +38,10 @@ class DataManager{
       this.dm.df = dfd.concat({ dfList: [this.dm.df, newDf], axis: 0 });
     }
   }
+
+  saveToCsv(filePath: string): void {
+      dfd.toCSV(this.dm.df, filePath);
+  }
 }
 
 export default DataManager;

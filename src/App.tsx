@@ -1,43 +1,16 @@
-import { useState, useCallback } from 'react'
-import { useDropzone } from 'react-dropzone'
+// src/App.tsx
+import React, { useState } from 'react'
+import MenuBar from './components/MenuBar'
+import DropZone from './components/DropZone'
 import './App.css'
 
 function App() {
   const [files, setFiles] = useState<File[]>([])
-  const [isDragging, setIsDragging] = useState(false)
-
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setFiles(acceptedFiles)
-    setIsDragging(false)
-  }, [])
-
-  const onDragEnter = useCallback(() => {
-    setIsDragging(true)
-  }, [])
-
-  const onDragLeave = useCallback(() => {
-    setIsDragging(false)
-  }, [])
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    onDragEnter,
-    onDragLeave,
-    noClick: true,
-  })
 
   return (
-    <div {...getRootProps({ className: 'dropzone' })}>
-      <input {...getInputProps()} />
-      {isDragging && <div className="drop-icon">Drop files here</div>}
-      <div className="files-list">
-        <h2>Files</h2>
-        <ul>
-          {files.map((file) => (
-            <li key={file.name}>{file.name}</li>
-          ))}
-        </ul>
-      </div>
+    <div className="d-flex flex-column" style={{ height: '100vh' }}>
+      <MenuBar />
+      <DropZone className="flex-grow-1" files={files} setFiles={setFiles} />
     </div>
   )
 }

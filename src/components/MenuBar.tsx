@@ -9,7 +9,7 @@ interface MenuBarProps {
 }
 
 const MenuBar: React.FC<MenuBarProps> = ({ className, dataManager, setDataManager, files }) => {
-  const handleOpen = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handleOpen = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
     files.forEach(file => {
       const reader = new FileReader()
@@ -22,7 +22,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ className, dataManager, setDataManage
     console.log('Files processed')
   }
 
-  const handleSave = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handleSave = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
     const fileName = prompt('Enter the filename to save:', 'data.csv')
     if (fileName) {
@@ -45,8 +45,8 @@ const MenuBar: React.FC<MenuBarProps> = ({ className, dataManager, setDataManage
               File
             </a>
             <div className="dropdown-menu" aria-labelledby="fileDropdown">
-              <a className="dropdown-item" href="#" onClick={handleOpen}>Open File(s)</a>
-              <a className="dropdown-item" href="#" onClick={handleSave}>Save File</a>
+              <button className="dropdown-item" onClick={handleOpen}>Open File(s)</button>
+              <button className="dropdown-item" onClick={handleSave}>Save File</button>
             </div>
           </li>
           <li className="nav-item">
